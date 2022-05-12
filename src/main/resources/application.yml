@@ -24,5 +24,6 @@ hibernate:
 
 CONSTANTS:
   PROJECTNAME: "SPRING_BASE"
+  SALTVALUE: "salt"
 
 
