@@ -1,10 +1,9 @@
 package com.server.base.common.authorizations;
 
 import com.server.base.common.constants.Constants;
-import io.jsonwebtoken.Header;
-import io.jsonwebtoken.Jwt;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.server.base.common.exception.Exceptions;
+import com.server.base.common.exception.ServiceException;
+import io.jsonwebtoken.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -48,13 +47,22 @@ public class TokenManager {
                 .signWith(SignatureAlgorithm.HS512, saltValue.getBytes(StandardCharsets.UTF_8))
                 .compact();
     }
-    public <R> R decrypt(R r, String token){
+    public <R> R decrypt(R r, String token) throws ServiceException {
         String saltValue = Constants.SALT_VALUE;
         ModelMapper modelMapper = new ModelMapper();
-        Map<String, Object>  claims =  Jwts.parser()
-                .setSigningKey(saltValue.getBytes(StandardCharsets.UTF_8))
-                .parseClaimsJws(token)
-                .getBody();
+        Map<String, Object>  claims = null;
+
+        try{
+            claims =  Jwts.parser()
+            .setSigningKey(saltValue.getBytes(StandardCharsets.UTF_8))
+            .parseClaimsJws(token)
+            .getBody();
+        } catch( ExpiredJwtException | UnsupportedJwtException |
+                MalformedJwtException | SignatureException |
+                IllegalArgumentException e){
+            throw new ServiceException(Exceptions.INVALID_TOKEN);
+        }
+
         R result = r;
         modelMapper.map(claims, result);
         return result;

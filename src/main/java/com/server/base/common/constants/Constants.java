@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 public class Constants {
     public static String PROJECT_NAME;
     public static String SALT_VALUE;
+    public static String TARGET_TYPE;
 
     @Value("${CONSTANTS.PROJECTNAME}")
     public void setProjectName(String _projectName){
