@@ -23,17 +23,22 @@ public class TokenManager {
         Long expireTime = Integer.valueOf(60*60*24).longValue();
         Field[] fields = t.getClass().getDeclaredFields();
         Map<String,Object> map = new HashMap<>();
+
         for(Field field:fields){
             field.setAccessible(true);
             String fieldName = field.getName();
             Class<?> fieldType = field.getType();
             Object fieldValue = null;
             try {
-                fieldValue = field.get(fieldName);
+                fieldValue = field.get(t);
             } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
-
-            if(!fieldType.isInstance("java.time.LocalDate")||!fieldType.isInstance("java.time.LocalTime")||!fieldType.isInstance("java.time.LocalDateTime")){
+            System.out.println(fieldName);
+            System.out.println(fieldValue);
+            System.out.println(fieldType);
+//            ERROR
+            if(!fieldType.equals("class java.time.LocalDateTime")||!fieldType.equals("class java.time.LocalTime")||!fieldType.equals("class java.time.LocalDateTime")){
                 map.put(fieldName, fieldValue);
             }
         }

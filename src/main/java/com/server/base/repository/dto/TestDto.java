@@ -1,14 +1,21 @@
 package com.server.base.repository.dto;
 
+import com.server.base.common.authorizations.AuthorizeDto;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
+@AuthorizeDto
+@Builder
 public class TestDto implements Serializable {
-    private Long id;
+    private String id1;
+    private Integer id2;
+    private Long id3;
+    private LocalDateTime id4;
 }

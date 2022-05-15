@@ -32,7 +32,7 @@ public class Authentication {
         Set<Class<?>> classSet = reflections.getTypesAnnotatedWith(AuthorizeDto.class);
         Iterator<Class<?>> targetOne = classSet.iterator();
         Class<?> target = targetOne.next();
-
+        System.out.println(target);
         for(int i = 0; i<parameters.length; i++){
             Long isExist = Arrays.asList(parameters[i].getDeclaredAnnotations())
                     .stream().filter(item-> item.annotationType().equals("org.springframework.web.bind.annotation.RequestHeader"))

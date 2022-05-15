@@ -27,13 +27,13 @@ public class ControllerAdvisor {
     public Response notFoundHandler(){
         return new Response(-404, "요청 주소가 잘못됐습니다.", null);
     }
-    @ExceptionHandler(NoHandlerFoundException.class)
+//    override
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public Response internalServerErrorHandler(){
         return new Response(-500, "일시적인 오류입니다.", null);
     }
-    @ExceptionHandler(NoHandlerFoundException.class)
+//    override
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     @ResponseBody
     public Response unauthorizedHandler(){
