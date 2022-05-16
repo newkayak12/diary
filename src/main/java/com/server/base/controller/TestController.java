@@ -20,7 +20,8 @@ import java.util.Map;
 public class TestController {
     private TestService testService;
     @Authorization
-    public void tst(@RequestHeader String token){
+    public void tst(@RequestHeader Object token){
+        System.out.println("IS WORK?");
         System.out.println(token);
     };
 

@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @AuthorizeDto
 @Builder
+@ToString
 public class TestDto implements Serializable {
     private String id1;
     private Integer id2;

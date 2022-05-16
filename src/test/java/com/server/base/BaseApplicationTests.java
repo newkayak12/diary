@@ -4,6 +4,7 @@ import com.server.base.common.authorizations.TokenManager;
 import com.server.base.controller.TestController;
 import com.server.base.repository.dto.TestDto;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,8 @@ import java.util.Map;
 
 @SpringBootTest
 class BaseApplicationTests {
+    @Autowired
+    TestController t;
 
     @Test
     void contextLoads() {
@@ -24,7 +27,6 @@ class BaseApplicationTests {
         TokenManager tk = new TokenManager();
         String token = tk.encrypt(v);
 
-        TestController t = new TestController();
         t.tst(token);
     }
 

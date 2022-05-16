@@ -4,6 +4,7 @@ import com.server.base.common.constants.Constants;
 import com.server.base.common.exception.Exceptions;
 import com.server.base.common.exception.ServiceException;
 import io.jsonwebtoken.*;
+import org.apache.tomcat.jni.Local;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,8 @@ import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +41,7 @@ public class TokenManager {
             System.out.println(fieldValue);
             System.out.println(fieldType);
 //            ERROR
-            if(!fieldType.equals("class java.time.LocalDateTime")||!fieldType.equals("class java.time.LocalTime")||!fieldType.equals("class java.time.LocalDateTime")){
+            if(!fieldType.isInstance(LocalDateTime.now())&&!fieldType.isInstance(LocalDate.now())&&!fieldType.isInstance(LocalTime.now())){
                 map.put(fieldName, fieldValue);
             }
         }
