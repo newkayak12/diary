@@ -3,9 +3,11 @@ package com.server.base.common.authorizations;
 import com.server.base.common.exception.Exceptions;
 import com.server.base.common.exception.ServiceException;
 import org.aspectj.apache.bcel.classfile.Method;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.reflections.Reflections;
 import org.springframework.stereotype.Component;
@@ -37,9 +39,7 @@ public class Authentication {
                 if(Objects.isNull(token)){
                     throw new ServiceException(Exceptions.INVALID_ACCESS);
                 }
-                System.out.println(tokenManager.decrypt(target.getConstructor().newInstance(), (String) token));
                 parameterValues[i] = tokenManager.decrypt(target.getConstructor().newInstance(), (String) token);
-                System.out.println(parameterValues[i]);
                 break;
             }
         }

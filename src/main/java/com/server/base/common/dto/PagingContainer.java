@@ -23,18 +23,19 @@ public class PagingContainer <T> {
                 .totalElement(listFunction.getTotalElements())
                 .build();
     }
-    @Setter
-    @AllArgsConstructor
-    @Builder
-    class PageInfo{
-        private Long page;
-        private Integer pageNumber;
-        private Integer pageSize;
-//        private Long offset;
-        private Boolean hasNext;
-        private Boolean hasPrevious;
-        private Long totalElement;
+
+}
+@Setter
+@AllArgsConstructor
+@Builder
+class PageInfo{
+    private Long page;
+    private Integer pageNumber;
+    private Integer pageSize;
+    //        private Long offset;
+    private Boolean hasNext;
+    private Boolean hasPrevious;
+    private Long totalElement;
 
 
-    }
 }
