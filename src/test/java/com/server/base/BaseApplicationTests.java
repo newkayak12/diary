@@ -23,7 +23,7 @@ class BaseApplicationTests {
     @Test
     void aopTest(){
 
-        TestDto v = TestDto.builder().id1("1").id2(1).id3(new Long(3)).id4(LocalDateTime.now()).build();
+        TestDto v = TestDto.builder().id1("1").id2(1).id3(new Long(3)).id4(LocalDateTime.now().minusDays(1)).build();
         TokenManager tk = new TokenManager();
         String token = tk.encrypt(v);
 

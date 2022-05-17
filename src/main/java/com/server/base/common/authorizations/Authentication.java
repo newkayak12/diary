@@ -1,23 +1,14 @@
 package com.server.base.common.authorizations;
 
-import com.server.base.common.constants.Constants;
 import com.server.base.common.exception.Exceptions;
 import com.server.base.common.exception.ServiceException;
-import org.apache.coyote.Request;
-import org.aspectj.lang.JoinPoint;
+import org.aspectj.apache.bcel.classfile.Method;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.reflections.Reflections;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestHeader;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
 
@@ -54,5 +45,4 @@ public class Authentication {
         }
         return joinPoint.proceed(joinPoint.getArgs());
     }
-
 }

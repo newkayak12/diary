@@ -8,12 +8,10 @@ import org.apache.tomcat.jni.Local;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,21 +29,20 @@ public class TokenManager {
             field.setAccessible(true);
             String fieldName = field.getName();
             Class<?> fieldType = field.getType();
+            Annotation[] annotations = field.getAnnotations();
             Object fieldValue = null;
             try {
                 fieldValue = field.get(t);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-            System.out.println(fieldName);
-            System.out.println(fieldValue);
-            System.out.println(fieldType);
-//            ERROR
-            if(!fieldType.isInstance(LocalDateTime.now())&&!fieldType.isInstance(LocalDate.now())&&!fieldType.isInstance(LocalTime.now())){
+            Long ignoreCount = Arrays.stream(annotations).filter(item-> item.annotationType().equals(IgnoreEncrypt.class)).count();
+            System.out.println(ignoreCount);
+            if(!fieldType.isInstance(java.time.LocalDateTime.now())&&!fieldType.isInstance(java.time.LocalDate.now())
+                    &&!fieldType.isInstance(java.time.LocalTime.now())&&!(ignoreCount>0)){
                 map.put(fieldName, fieldValue);
             }
         }
-
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setIssuer(projectName)
