@@ -17,7 +17,6 @@ import java.util.*;
 @Component
 @Aspect
 public class Authentication {
-    TokenManager tokenManager = new TokenManager();
 
     @Around("@annotation(com.server.base.common.authorizations.Authorization)")
     public Object decrypt(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -39,7 +38,7 @@ public class Authentication {
                 if(Objects.isNull(token)){
                     throw new ServiceException(Exceptions.INVALID_ACCESS);
                 }
-                parameterValues[i] = tokenManager.decrypt(target.getConstructor().newInstance(), (String) token);
+                parameterValues[i] = TokenManager.decrypt(target.getConstructor().newInstance(), (String) token);
                 break;
             }
         }

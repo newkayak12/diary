@@ -1,13 +1,15 @@
 package com.server.base.controller;
 
 import com.server.base.common.authorizations.Authorization;
+import com.server.base.common.responseContainer.Response;
+import com.server.base.common.responseContainer.EncryptResponse;
 import com.server.base.service.TestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 
 @RestController
@@ -18,9 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     private TestService testService;
     @Authorization
-    public void tst(@RequestHeader Object token){
-        System.out.println("IS WORK?");
-        System.out.println(token);
+    @GetMapping(value = "/test")
+    public Response tst(@RequestHeader(value = HttpHeaders.AUTHORIZATION) Object token, HttpServletResponse res){
+        return new EncryptResponse( res, token,123123123);
     };
 
 }

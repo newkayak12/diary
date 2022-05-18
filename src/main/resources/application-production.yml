@@ -25,3 +25,6 @@ spring:
     file:
       name: ./logs/out.log
 
+CONSTANTS:
+  ISDEVMODE: "false"
+

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 public class Constants {
     public static String PROJECT_NAME;
     public static String SALT_VALUE;
-    public static String TARGET_TYPE;
+    public static Boolean IS_DEV_MODE;
 
     @Value("${CONSTANTS.PROJECTNAME}")
     public void setProjectName(String _projectName){
@@ -15,4 +15,6 @@ public class Constants {
     }
     @Value("${CONSTANTS.SALTVALUE}")
     public void setSaltValue(String _saltValue) { SALT_VALUE = _saltValue; }
+    @Value("${CONSTANTS.ISDEVMODE}")
+    public void setIsDevMode(Boolean _is_dev_mode){ IS_DEV_MODE = _is_dev_mode; }
 }

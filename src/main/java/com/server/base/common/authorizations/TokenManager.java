@@ -16,9 +16,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
 public class TokenManager {
-    public <T> String  encrypt(T t){
+    public static <T> String  encrypt(T t){
         String saltValue = Constants.SALT_VALUE;
         String projectName = Constants.PROJECT_NAME;
         Long expireTime = Integer.valueOf(60*60*24).longValue();
@@ -37,7 +36,6 @@ public class TokenManager {
                 e.printStackTrace();
             }
             Long ignoreCount = Arrays.stream(annotations).filter(item-> item.annotationType().equals(IgnoreEncrypt.class)).count();
-            System.out.println(ignoreCount);
             if(!fieldType.isInstance(java.time.LocalDateTime.now())&&!fieldType.isInstance(java.time.LocalDate.now())
                     &&!fieldType.isInstance(java.time.LocalTime.now())&&!(ignoreCount>0)){
                 map.put(fieldName, fieldValue);
@@ -52,7 +50,7 @@ public class TokenManager {
                 .signWith(SignatureAlgorithm.HS512, saltValue.getBytes(StandardCharsets.UTF_8))
                 .compact();
     }
-    public <R> R decrypt(R r, String token) throws ServiceException {
+    public static <R> R decrypt(R r, String token) throws ServiceException {
         String saltValue = Constants.SALT_VALUE;
         ModelMapper modelMapper = new ModelMapper();
         Map<String, Object>  claims = null;
