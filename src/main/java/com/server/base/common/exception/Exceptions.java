@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum Exceptions {
 //    TOKEN_EXCEPTIONS
-    INVALID_TOKEN(-999,"로그인 유효 기간이 만료되었습니다."),
+    INVALID_TOKEN(-999,"비정상적인 접근입니다."),
+    TOKEN_EXPIRED(-998, "접근 권한이 만료되었습니다."),
     INVALID_ACCESS(-998, "잘못된 접근입니다."),
 
 //    USER_EXCEPTIONS

@@ -16,9 +16,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class TokenManager {
+//    AccessToken
+    private static byte[] getSecretKey(){
+        return Constants.SALT_VALUE.getBytes(StandardCharsets.UTF_8);
+    }
     public static <T> String  encrypt(T t){
-        String saltValue = Constants.SALT_VALUE;
         String projectName = Constants.PROJECT_NAME;
         Long expireTime = Integer.valueOf(60*60*24).longValue();
         Field[] fields = t.getClass().getDeclaredFields();
@@ -41,23 +45,26 @@ public class TokenManager {
                 map.put(fieldName, fieldValue);
             }
         }
-        return Jwts.builder()
+        return "Bearer "+Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setIssuer(projectName)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis()+expireTime))
                 .setClaims(map)
-                .signWith(SignatureAlgorithm.HS512, saltValue.getBytes(StandardCharsets.UTF_8))
+                .signWith(SignatureAlgorithm.HS512, getSecretKey())
                 .compact();
     }
     public static <R> R decrypt(R r, String token) throws ServiceException {
-        String saltValue = Constants.SALT_VALUE;
+
         ModelMapper modelMapper = new ModelMapper();
         Map<String, Object>  claims = null;
-
         try{
+            if(!token.startsWith("Bearer ")){
+                throw new ServiceException(Exceptions.INVALID_TOKEN);
+            }
+            token = token.replace("Bearer ","");
             claims =  Jwts.parser()
-            .setSigningKey(saltValue.getBytes(StandardCharsets.UTF_8))
+            .setSigningKey(getSecretKey())
             .parseClaimsJws(token)
             .getBody();
         } catch( ExpiredJwtException | UnsupportedJwtException |
@@ -68,6 +75,14 @@ public class TokenManager {
 
         R result = r;
         modelMapper.map(claims, result);
+
         return result;
+    }
+    public static Boolean isExpired(String token){
+        Date expiration = Jwts.parser()
+                .setSigningKey(getSecretKey())
+                .parseClaimsJws(token)
+                .getBody().getExpiration();
+        return new Date().after(expiration);
     }
 }
