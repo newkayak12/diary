@@ -11,20 +11,28 @@ import org.springframework.stereotype.Component;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 public class TokenManager {
 //    AccessToken
-    private static byte[] getSecretKey(){
-        return Constants.SALT_VALUE.getBytes(StandardCharsets.UTF_8);
+
+    /**
+     * access secret
+     * @return
+     */
+    private static String getSecretKey(){
+        return Base64.getEncoder().encodeToString(Constants.SALT_VALUE.getBytes());
     }
+
+    /**
+     * access 암호화
+     * @param t
+     * @param <T>
+     * @return
+     */
     public static <T> String  encrypt(T t){
         String projectName = Constants.PROJECT_NAME;
-        Long expireTime = Integer.valueOf(60*60*24).longValue();
         Field[] fields = t.getClass().getDeclaredFields();
         Map<String,Object> map = new HashMap<>();
 
@@ -46,14 +54,23 @@ public class TokenManager {
             }
         }
         return "Bearer "+Jwts.builder()
-                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+                .setHeaderParam(Header.TYPE, Constants.ACCESS_TOKEN)
+                .setClaims(map)
                 .setIssuer(projectName)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis()+expireTime))
-                .setClaims(map)
+                .setExpiration(new Date(System.currentTimeMillis()+1000*60L*60L*12))
                 .signWith(SignatureAlgorithm.HS512, getSecretKey())
                 .compact();
     }
+
+    /**
+     * access 복호화
+     * @param r
+     * @param token
+     * @param <R>
+     * @return
+     * @throws ServiceException
+     */
     public static <R> R decrypt(R r, String token) throws ServiceException {
 
         ModelMapper modelMapper = new ModelMapper();
@@ -78,11 +95,43 @@ public class TokenManager {
 
         return result;
     }
+
+    /**
+     * access 만료 체크
+     * @param token
+     * @return
+     */
     public static Boolean isExpired(String token){
+        token = token.replace("Bearer ","");
         Date expiration = Jwts.parser()
                 .setSigningKey(getSecretKey())
                 .parseClaimsJws(token)
                 .getBody().getExpiration();
-        return new Date().after(expiration);
+        return new Date(System.currentTimeMillis()+1000*60L*60L*13).after(expiration);
+    }
+
+    /**
+     * refreshSecret
+     * @return
+     */
+    private static String getRefreshSecretKey(){
+        return Base64.getEncoder().encodeToString(Constants.REFRESH_SALT_VALUE.getBytes());
+    }
+
+    /**
+     * refresh 만들기
+     * @param no
+     * @return
+     */
+    public static String refreshEncrypt(Integer no){
+        Map<String, Object> map = new HashMap<>();
+        map.put("userNo", no);
+        return "Bearer "+Jwts.builder()
+                .setHeaderParam(Header.TYPE, Constants.REFRESH_TOKEN)
+                .setClaims(map)
+                .setIssuer(Constants.PROJECT_NAME)
+                .setIssuedAt(new Date())
+                .signWith(SignatureAlgorithm.HS512, getRefreshSecretKey())
+                .compact();
     }
 }

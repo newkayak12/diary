@@ -3,7 +3,7 @@ package com.server.base.controller;
 import com.server.base.common.authorizations.Authorization;
 import com.server.base.common.responseContainer.Response;
 import com.server.base.common.responseContainer.EncryptResponse;
-import com.server.base.service.TestService;
+import com.server.base.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @RequiredArgsConstructor
 public class TestController {
-    private TestService testService;
+    private UserService testService;
     @Authorization
     @GetMapping(value = "/test")
     public Response tst(@RequestHeader(value = HttpHeaders.AUTHORIZATION) Object token, HttpServletResponse res){

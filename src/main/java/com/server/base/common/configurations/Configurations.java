@@ -10,15 +10,15 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class Configurations /*implements WebMvcConfigurer*/ {
-//    @Autowired
-//    private AuthInterceptor authInterceptor;
+public class Configurations implements WebMvcConfigurer {
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){return new BCryptPasswordEncoder();}
     @Bean
     public ModelMapper modelMapper(){return new ModelMapper();}
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(authInterceptor).excludePathPatterns("/api/user/**");
-//    }
+    @Bean
+    public AuthInterceptor authInterceptor(){return new AuthInterceptor();}
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authInterceptor()).excludePathPatterns("/api/user/**");
+    }
 }
