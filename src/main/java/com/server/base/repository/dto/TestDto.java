@@ -1,7 +1,7 @@
 package com.server.base.repository.dto;
 
-import com.server.base.common.authorizations.AuthorizeDto;
-import com.server.base.common.authorizations.IgnoreEncrypt;
+import com.server.base.common.authorizations.annotations.AuthorizeDto;
+import com.server.base.common.authorizations.annotations.IgnoreEncrypt;
 import lombok.*;
 
 import java.io.Serializable;

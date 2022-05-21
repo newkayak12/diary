@@ -1,6 +1,6 @@
 package com.server.base.controller;
 
-import com.server.base.common.authorizations.Authorization;
+import com.server.base.common.authorizations.annotations.Authorization;
 import com.server.base.common.responseContainer.Response;
 import com.server.base.common.responseContainer.EncryptResponse;
 import com.server.base.service.UserService;

@@ -1,4 +1,4 @@
-package com.server.base.common.authorizations;
+package com.server.base.common.authorizations.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

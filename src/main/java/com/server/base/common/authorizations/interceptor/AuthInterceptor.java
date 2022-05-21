@@ -1,5 +1,6 @@
-package com.server.base.common.authorizations;
+package com.server.base.common.authorizations.interceptor;
 
+import com.server.base.common.authorizations.TokenManager;
 import com.server.base.common.constants.Constants;
 import com.server.base.common.exception.Exceptions;
 import com.server.base.common.exception.ServiceException;

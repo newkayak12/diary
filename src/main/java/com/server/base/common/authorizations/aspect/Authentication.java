@@ -1,13 +1,12 @@
-package com.server.base.common.authorizations;
+package com.server.base.common.authorizations.aspect;
 
+import com.server.base.common.authorizations.TokenManager;
+import com.server.base.common.authorizations.annotations.AuthorizeDto;
 import com.server.base.common.exception.Exceptions;
 import com.server.base.common.exception.ServiceException;
-import org.aspectj.apache.bcel.classfile.Method;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.reflections.Reflections;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,7 @@ import java.util.*;
 @Aspect
 public class Authentication {
 
-    @Around("@annotation(com.server.base.common.authorizations.Authorization)")
+    @Around("@annotation(com.server.base.common.authorizations.annotations.Authorization)")
     public Object decrypt(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Object[] parameterValues = joinPoint.getArgs();

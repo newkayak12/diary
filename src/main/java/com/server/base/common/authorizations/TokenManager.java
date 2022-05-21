@@ -1,16 +1,14 @@
 package com.server.base.common.authorizations;
 
+import com.server.base.common.authorizations.annotations.IgnoreEncrypt;
 import com.server.base.common.constants.Constants;
 import com.server.base.common.exception.Exceptions;
 import com.server.base.common.exception.ServiceException;
 import io.jsonwebtoken.*;
-import org.apache.tomcat.jni.Local;
 import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 
