@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import java.io.IOException;
 
 public class Mapper {
-    public static  <T, R> T modelMapping(T target, R reference){
+    public static  <R, T> T modelMapping( R reference, T target){
         ModelMapper modelMapper  = new ModelMapper();
         modelMapper.map(reference,target);
         return target;

@@ -121,7 +121,7 @@ public class TokenManager {
      * @param no
      * @return
      */
-    public static String refreshEncrypt(Integer no){
+    public static String refreshEncrypt(Long no){
         Map<String, Object> map = new HashMap<>();
         map.put("userNo", no);
         return "Bearer "+Jwts.builder()

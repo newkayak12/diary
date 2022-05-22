@@ -10,7 +10,7 @@ public enum Exceptions {
     INVALID_ACCESS(-998, "잘못된 접근입니다."),
 
 //    USER_EXCEPTIONS
-    NO_DATA(-1, "존재하지 않는 데이터입니다.");
+    NO_DATA(-1, "아이디 혹은 비밀번호가 잘못됐습니다."),
 
 
 
