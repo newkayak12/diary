@@ -6,6 +6,7 @@ import com.server.base.common.exception.Exceptions;
 import com.server.base.common.exception.ServiceException;
 import com.server.base.repository.dto.UserDto;
 import com.server.base.service.UserService;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -15,9 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
+@NoArgsConstructor
 public class AuthInterceptor extends HandlerInterceptorAdapter {
-    private final UserService userService;
+    @Autowired
+    private  UserService userService;
 
 
     @Override

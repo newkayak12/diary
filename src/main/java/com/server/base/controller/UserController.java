@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 @RestController
-@CrossOrigin(origins = "*", allowCredentials ="true")
+@CrossOrigin("*")
 @RequestMapping(value = "/api/user")
 @Slf4j
 @RequiredArgsConstructor
