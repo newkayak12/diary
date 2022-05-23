@@ -1,7 +1,7 @@
 package com.server.base.repository.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.server.base.common.Enums.UserStatus;
+import com.server.base.common.enums.UserStatus;
 import com.server.base.common.authorizations.annotations.AuthorizeDto;
 import com.server.base.common.authorizations.annotations.IgnoreEncrypt;
 import lombok.*;

@@ -1,6 +1,6 @@
 package com.server.base.common.converter;
 
-import com.server.base.common.Enums.UserStatus;
+import com.server.base.common.enums.UserStatus;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

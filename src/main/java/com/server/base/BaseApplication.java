@@ -11,11 +11,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class BaseApplication {
     public static void main(String[] args) {
         SpringApplication.run(BaseApplication.class, args);
-
         log.error("-----------------------------------------------------------------------------");
         log.error(" ⊂_ヽ                      ______                 _              _   ");
-        log.error("　  ＼＼  Λ＿Λ               | ___ \\               (_)            | |  ");
-        log.error("　 　 ＼( ‘ㅅ’ ) 두둠칫        | |_/ / _ __   ___     _   ___   ___ | |_ ");
+        log.error("　 ＼＼  Λ＿Λ                | ___ \\               (_)            | |  ");
+        log.error("　 　＼( ‘ㅅ’ ) 두둠칫         | |_/ / _ __   ___     _   ___   ___ | |_ ");
         log.error("　　　 >　⌒ヽ                 |  __/ | '__| / _ \\   | | / _ \\ / __|| __| ");
         log.error("　　　/ 　 へ＼                | |    | |   | (_) |  | ||  __/| (__ | |_  ");
         log.error("　　 /　　/　＼＼               \\_|    |_|    \\___/   | | \\___| \\___| \\__| ");

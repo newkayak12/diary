@@ -1,8 +1,11 @@
-package com.server.base.repository.entity;
+package com.server.base.repository.userRepository;
 
 import com.server.base.common.baseEntity.AuthEntity;
 import com.server.base.common.baseEntity.UserDateEntity;
+import io.jsonwebtoken.lang.Objects;
 import lombok.*;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 
@@ -26,4 +29,11 @@ public class User extends UserDateEntity {
 
     @Embedded
     private AuthEntity authEntity;
+
+    public void setRefreshToken(String value){
+        if(ObjectUtils.isEmpty(this.authEntity.getRefreshToken())){
+            authEntity.setRefreshToken(value);
+        }
+
+    }
 }

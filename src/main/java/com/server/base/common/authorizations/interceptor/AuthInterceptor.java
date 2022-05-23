@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,35 +19,41 @@ import java.util.Objects;
 
 //@RequiredArgsConstructor
 @NoArgsConstructor
-public class AuthInterceptor extends HandlerInterceptorAdapter {
+public class AuthInterceptor implements HandlerInterceptor {
     @Autowired
     private  UserService userService;
 
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String accessToken = request.getHeader("Authorization");
-        String refreshToken = request.getHeader(Constants.REFRESH_TOKEN);
-        Boolean isExpired = TokenManager.isExpired(accessToken);
 
-        if(Objects.isNull(accessToken)||isExpired){ //access 토큰이 없거나 만료됐다면
-            if(Objects.isNull(refreshToken)){ //refresh 토큰이 없다면
-                throw new ServiceException(Exceptions.TOKEN_EXPIRED); //error
-            } else {//refresh 토큰이 있다면
-                UserDto userDto = TokenManager.decrypt(new UserDto(), accessToken);//    토큰 decrypt
-                String userToken = userService.getRefreshToken(userDto.getUserNo());//  userNo 가져와서
-                //DB에서 userNo로 refresh token을 가져오고
-                if(!Objects.isNull(userToken)&&userToken.equals(refreshToken)){ ///DB의 토큰과 같다면
-                     String accessTokenRemade = TokenManager.encrypt(userDto); //   재발급
-                     response.addHeader(Constants.REFRESH_TOKEN, accessTokenRemade);
-                    return super.preHandle(request, response, handler);
-                } else {
-                    throw new ServiceException(Exceptions.TOKEN_EXPIRED);
+            String accessToken = request.getHeader("Authorization");
+            String refreshToken = request.getHeader(Constants.REFRESH_TOKEN);
+            Boolean isExpired = null;
+            try{
+                isExpired = TokenManager.isExpired(accessToken);
+            } catch (NullPointerException e){
+                isExpired = true;
+            }
+
+            if(Objects.isNull(accessToken)||isExpired){ //access 토큰이 없거나 만료됐다면
+                if(Objects.isNull(refreshToken)){ //refresh 토큰이 없다면
+                    throw new ServiceException(Exceptions.TOKEN_EXPIRED); //error
+                } else {//refresh 토큰이 있다면
+                    UserDto userDto = TokenManager.decrypt(new UserDto(), accessToken);//    토큰 decrypt
+                    String userToken = userService.getRefreshToken(userDto.getUserNo());//  userNo 가져와서
+                    //DB에서 userNo로 refresh token을 가져오고
+                    if(!Objects.isNull(userToken)&&userToken.equals(refreshToken)){ ///DB의 토큰과 같다면
+                        String accessTokenRemade = TokenManager.encrypt(userDto); //   재발급
+                        response.addHeader(Constants.REFRESH_TOKEN, accessTokenRemade);
+                        return HandlerInterceptor.super.preHandle(request, response, handler);
+                    } else {
+                        throw new ServiceException(Exceptions.TOKEN_EXPIRED);
+                    }
                 }
             }
-        }
 
-        //access 토큰이 있고 만료가 안됐으면
-            return super.preHandle(request, response, handler);
-    }
+            //access 토큰이 있고 만료가 안됐으면
+            return HandlerInterceptor.super.preHandle(request, response, handler);
+        }
 }

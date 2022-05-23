@@ -9,6 +9,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+
+import java.util.List;
 
 @Configuration
 public class Configurations implements WebMvcConfigurer {
@@ -21,6 +27,10 @@ public class Configurations implements WebMvcConfigurer {
     public AuthInterceptor authInterceptor(){return new AuthInterceptor();}
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor()).excludePathPatterns("/api/user/**");
+        List<String> excludePath = List.of("/api/user/signUp", "/api/user/signIn", "/error/*");
+        List<String> includePath = List.of("/api/user/*");
+//        , "**/**/swagger-ui.html"
+        registry.addInterceptor(authInterceptor()).addPathPatterns(includePath).excludePathPatterns(excludePath);
     }
+
 }

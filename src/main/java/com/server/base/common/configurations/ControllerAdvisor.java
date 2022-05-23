@@ -12,24 +12,28 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 @ControllerAdvice
 public class ControllerAdvisor {
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({ServiceException.class})
     public Response ServiceExceptionHandler(ServiceException e){
+
+        System.out.println("SERVICE");
         return new Response(e.getCode(), e.getMsg(), null);
     }
 
     @ExceptionHandler({Exception.class})
     public Response ExceptionHandler(Exception e){
+        System.out.println("EXCEPTION");
         return new Response(0, e.getMessage(), e.getCause());
     }
 
-    @ExceptionHandler(NoHandlerFoundException.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    @ResponseBody
-    public Response internalServerErrorHandler(Exception e){
-        Boolean isDevMode = Constants.IS_DEV_MODE;
-        if(isDevMode){
-            return new Response(-500, "일시적인 오류입니다.", null);
-        }
-        return new Response(-500, e.getMessage(), null);
-    }
+//    @ExceptionHandler(NoHandlerFoundException.class)
+//    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+//    @ResponseBody
+//    public Response internalServerErrorHandler(Exception e){
+//        Boolean isDevMode = Constants.IS_DEV_MODE;
+//        if(isDevMode){
+//            return new Response(-500, "일시적인 오류입니다.", null);
+//        }
+//        return new Response(-500, e.getMessage(), null);
+//    }
 }

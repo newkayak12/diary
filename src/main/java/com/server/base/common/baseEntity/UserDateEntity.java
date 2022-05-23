@@ -1,6 +1,6 @@
 package com.server.base.common.baseEntity;
 
-import com.server.base.common.Enums.UserStatus;
+import com.server.base.common.enums.UserStatus;
 import com.server.base.common.converter.UserStatusConverter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @DynamicUpdate
