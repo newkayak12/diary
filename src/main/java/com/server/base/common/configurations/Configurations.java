@@ -1,6 +1,7 @@
 package com.server.base.common.configurations;
 
 import com.server.base.common.authorizations.interceptor.AuthInterceptor;
+import com.server.base.common.constants.Constants;
 import com.server.base.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Configuration
 public class Configurations implements WebMvcConfigurer {
@@ -28,7 +30,8 @@ public class Configurations implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         List<String> excludePath = List.of("/api/user/signUp", "/api/user/signIn", "/error/*");
-        List<String> includePath = List.of("/api/user/*");
+        List<String> apiList = Constants.API_PATH;
+        List<String> includePath = apiList.stream().map(item-> "/api/"+item+"/*").collect(Collectors.toList());
 //        , "**/**/swagger-ui.html"
         registry.addInterceptor(authInterceptor()).addPathPatterns(includePath).excludePathPatterns(excludePath);
     }

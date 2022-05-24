@@ -3,6 +3,9 @@ package com.server.base.common.constants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Component
 public class Constants {
     public static String PROJECT_NAME;
@@ -11,11 +14,14 @@ public class Constants {
     public static String ACCESS_TOKEN;
     public static String REFRESH_SALT_VALUE;
     public static String REFRESH_TOKEN;
+    public static List<String> API_PATH;
 
     @Value("${CONSTANTS.PROJECTNAME}")
     public void setProjectName(String _projectName){
         PROJECT_NAME=_projectName;
     }
+    @Value("${CONSTANTS.APIPATHS}")
+    public void setApiPath(String _apiPath){ API_PATH = Arrays.asList(_apiPath.split(",")); }
     @Value("${CONSTANTS.SALTVALUE}")
     public void setSaltValue(String _saltValue) { SALT_VALUE = _saltValue; }
     @Value("${CONSTANTS.REFRESHSALTVALUE}")
