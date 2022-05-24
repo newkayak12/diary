@@ -15,6 +15,7 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,5 +36,7 @@ public class Configurations implements WebMvcConfigurer {
 //        , "**/**/swagger-ui.html"
         registry.addInterceptor(authInterceptor()).addPathPatterns(includePath).excludePathPatterns(excludePath);
     }
+    @Bean
+    public DateLogger dateLogger() {return new DateLogger();}
 
 }

@@ -1,6 +1,9 @@
 package com.server.base.common.configurations;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.base.common.constants.Constants;
+import org.codehaus.jettison.json.JSONObject;
+import org.springframework.boot.json.JsonParser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -14,7 +17,16 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 @Configuration
@@ -53,9 +65,22 @@ public class SwaggerConfig implements WebMvcConfigurer {
         return produces;
     }
     private ApiInfo getApiInfo() {
+        String date = "";
+        if(Constants.IS_DEV_MODE) {
+            try {
+                String path = FileSystems.getDefault().getPath("").toAbsolutePath().toString();
+                File f = new File(path + "/src/main/java/com/server/base/common/configurations/jsonLog/log.json");
+                ObjectMapper objectMapper = new ObjectMapper();
+                Map<String, Object> json = objectMapper.readValue(f, Map.class);
+                date = (String) json.get("date");
+            } catch (IOException e) {
+                date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss")).toString();
+            }
+        }
+
         return new ApiInfoBuilder()
-                .title("API")
-                .description(Constants.PROJECT_NAME+" API")
+                .title(Constants.PROJECT_NAME+" API")
+                .description("Last Modified Date : "+date)
                 .contact(new Contact("newkayak12", "https://github.com/newkayak12", "newkayak12@gmail.com"))
                 .version("1.0")
                 .build();
