@@ -2,20 +2,14 @@ package com.server.base.common.configurations;
 
 import com.server.base.common.authorizations.interceptor.AuthInterceptor;
 import com.server.base.common.constants.Constants;
-import com.server.base.service.UserService;
+import com.server.base.common.fileUpload.FileUpload;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,5 +32,7 @@ public class Configurations implements WebMvcConfigurer {
     }
     @Bean
     public DateLogger dateLogger() {return new DateLogger();}
+    @Bean
+    public FileUpload fileUpload(){return new FileUpload(Constants.FILE_PATH, Constants.IMAGE_URL, Constants.RESIZE, Constants.FILE_MAXIMUM_SIZE);}
 
 }

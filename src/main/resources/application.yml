@@ -40,4 +40,6 @@ CONSTANTS:
   ACCESSTOKENNAME: "ac"
   REFRESHSALTVALUE: "salt"
   REFRESHTOKENNAME: "rf"
+  APIPATH: "" ## delimiter ','  no space around ','
+
 

@@ -2,9 +2,9 @@ spring:
   profiles: local
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: ""
-    username: ""
-    password: ""
+    url:
+    username:
+    password:
     hikari:
       maximum-pool-size: 5
       connection-timeout: 5000
@@ -19,6 +19,7 @@ spring:
     level:
       root: info
       sql: debug
+      swagger: info
     charset:
       console: UTF-8
       file: UTF-8
@@ -26,5 +27,9 @@ spring:
       name: ./logs/out.log
 
 CONSTANTS:
-  ISDEVMODE: "true"
+  ISDEVMODE: true
+  IMAGEURL: ""
+  FILEPATH: ""
+  RESIZE: "false"
+  FILEMAXIMUMSIZE: "512" ##MB
 

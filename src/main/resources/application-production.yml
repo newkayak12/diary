@@ -27,4 +27,7 @@ spring:
 
 CONSTANTS:
   ISDEVMODE: false
-
+  IMAGEURL: ""
+  FILEPATH: ""
+  RESIZE: "false"
+  FILEMAXIMUMSIZE: "512" ##MB
