@@ -26,6 +26,16 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if(Constants.IS_DEV_MODE){
+            System.out.println(" _____         _                                   _                ");
+            System.out.println("|_   _|       | |                                 | |               ");
+            System.out.println("  | |   _ __  | |_   ___  _ __   ___   ___  _ __  | |_   ___   _ __ ");
+            System.out.println("  | |  | '_ \\ | __| / _ \\| '__| / __| / _ \\| '_ \\ | __| / _ \\ | '__|");
+            System.out.println(" _| |_ | | | || |_ |  __/| |   | (__ |  __/| |_) || |_ | (_) || |   ");
+            System.out.println(" \\___/ |_| |_| \\__| \\___||_|    \\___| \\___|| .__/  \\__| \\___/ |_|   ");
+            System.out.println("                                           | |                      ");
+            System.out.println("                                           |_|                      ");
+        }
 
             String accessToken = request.getHeader("Authorization");
             String refreshToken = request.getHeader(Constants.REFRESH_TOKEN);
@@ -41,7 +51,8 @@ public class AuthInterceptor implements HandlerInterceptor {
                     throw new ServiceException(Exceptions.TOKEN_EXPIRED); //error
                 } else {//refresh 토큰이 있다면
                     UserDto userDto = TokenManager.decrypt(new UserDto(), accessToken);//    토큰 decrypt
-                    String userToken = userService.getRefreshToken(userDto.getUserNo());//  userNo 가져와서
+                    userDto = userService.getRefreshToken(userDto.getUserNo());//  userNo 가져와서
+                    String userToken  = userDto.getAuthEntity().getRefreshToken();
                     //DB에서 userNo로 refresh token을 가져오고
                     if(!Objects.isNull(userToken)&&userToken.equals(refreshToken)){ ///DB의 토큰과 같다면
                         String accessTokenRemade = TokenManager.encrypt(userDto); //   재발급

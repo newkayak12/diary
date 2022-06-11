@@ -26,8 +26,8 @@ spring:
       name: ./logs/out.log
 
 CONSTANTS:
-  ISDEVMODE: false
-  IMAGEURL: ""
-  FILEPATH: ""
+  IS_DEV_MODE: false
+  IMAGE_URL: ""
+  FILE_PATH: ""
   RESIZE: "false"
-  FILEMAXIMUMSIZE: "512" ##MB
+  FILE_MAXIMUM_SIZE: "512" ##MB

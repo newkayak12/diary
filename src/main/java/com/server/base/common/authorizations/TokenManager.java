@@ -56,7 +56,7 @@ public class TokenManager {
                 .setClaims(map)
                 .setIssuer(projectName)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60L*60L*12))
+                .setExpiration(new Date(System.currentTimeMillis()+Constants.ACCESS_TOKEN_TIME))
                 .signWith(SignatureAlgorithm.HS512, getSecretKey())
                 .compact();
     }
@@ -82,10 +82,12 @@ public class TokenManager {
             .setSigningKey(getSecretKey())
             .parseClaimsJws(token)
             .getBody();
-        } catch( ExpiredJwtException | UnsupportedJwtException |
-                MalformedJwtException | SignatureException |
-                IllegalArgumentException e){
-            throw new ServiceException(Exceptions.INVALID_TOKEN);
+        } catch( ExpiredJwtException  e){
+//          vulnerability
+            claims =  e.getClaims();
+            if(!claims.get("iss").equals(Constants.PROJECT_NAME)){
+                throw new ServiceException(Exceptions.INVALID_TOKEN);
+            }
         }
 
         R result = r;
@@ -105,7 +107,7 @@ public class TokenManager {
                 .setSigningKey(getSecretKey())
                 .parseClaimsJws(token)
                 .getBody().getExpiration();
-        return new Date(System.currentTimeMillis()+1000*60L*60L*13).after(expiration);
+        return new Date(System.currentTimeMillis()+1000*60L*60L*13).before(expiration);
     }
 
     /**

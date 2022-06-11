@@ -27,8 +27,8 @@ public class UserService {
      * @return
      */
     @Transactional(readOnly = true)
-    public String getRefreshToken(Long userNo){
-        return userRepository.getUserByUserNo(userNo).getAuthEntity().getRefreshToken();
+    public UserDto getRefreshToken(Long userNo){
+        return Mapper.modelMapping(userRepository.getUserByUserNo(userNo), new UserDto());
     }
 
     /**

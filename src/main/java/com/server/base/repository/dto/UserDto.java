@@ -24,7 +24,7 @@ public class UserDto implements Serializable {
     @IgnoreEncrypt
     private String password;
     @JsonIgnore
-    private String refreshToken;
+    private AuthEntityDto authEntity=new AuthEntityDto();
     private UserStatus userStatus;
     private LocalDateTime regDate;
     private LocalDateTime lastLoginDate;
