@@ -2,6 +2,7 @@ package com.server.base.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ public class PagingContainer <T> {
 @Setter
 @AllArgsConstructor
 @Builder
+@Getter
 class PageInfo{
     private Long page;
     private Integer pageNumber;
