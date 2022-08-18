@@ -1,6 +1,7 @@
 # Spring_BASE
 
 - spring 2.6.7
+- spring config server client 3.1.3
 - hibernate 5.6.8.FINAL
 - querydsl 5.0.0
 - modelmapper 3.1.0
