@@ -2,6 +2,7 @@
 
 - spring 2.6.7
 - spring config server client 3.1.3
+- spring actuator 2.6.7
 - hibernate 5.6.8.FINAL
 - querydsl 5.0.0
 - modelmapper 3.1.0
@@ -21,7 +22,6 @@
 >   <br/>
 >   <br/> @IgnoreEncrypt :  Jwt body 변환 무시
 >   <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -> 주로 변환 대상이 되는 dto의 필드에 선언
->   <br/>
 >   <br/>
 
 
