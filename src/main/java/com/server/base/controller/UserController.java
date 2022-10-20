@@ -1,25 +1,15 @@
 package com.server.base.controller;
 
-import com.server.base.common.authorizations.TokenManager;
-import com.server.base.common.authorizations.annotations.Authorization;
 import com.server.base.common.constants.Constants;
 import com.server.base.common.exception.ServiceException;
-import com.server.base.common.responseContainer.Response;
 import com.server.base.common.responseContainer.EncryptResponse;
+import com.server.base.common.responseContainer.Response;
 import com.server.base.repository.dto.UserDto;
 import com.server.base.service.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;

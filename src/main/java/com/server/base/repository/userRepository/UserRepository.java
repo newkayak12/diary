@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
     User getUserByUserNo(Long userNo);
     Optional<User> getUserByUserId(String userId);
+
 }

@@ -1,5 +1,6 @@
 package com.server.base;
 
+import com.server.base.common.apiInspectionGenerator.ApiInspectionGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @Slf4j
 public class BaseApplication {
     public static void main(String[] args) {
+        ApiInspectionGenerator.inspection();
         SpringApplication.run(BaseApplication.class, args);
         log.error("-----------------------------------------------------------------------------");
         log.error(" ⊂_ヽ                      ______                 _              _   ");
