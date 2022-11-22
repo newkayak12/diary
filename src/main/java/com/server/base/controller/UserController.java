@@ -29,7 +29,7 @@ public class UserController {
     public Response signIn(@ModelAttribute UserDto userDto,
                            HttpServletResponse response) throws ServiceException {
         UserDto result = userService.getUser(userDto);
-        response.addHeader(Constants.REFRESH_TOKEN, result.getRefreshToken());
+        response.addHeader(Constants.REFRESH_TOKEN, result.getAuthEntity().getRefreshToken());
         return new EncryptResponse( response, result,null);
     };
 
@@ -38,7 +38,7 @@ public class UserController {
     public Response signOut(@RequestBody UserDto userDto, HttpServletResponse response) throws ServiceException{
         log.error("WORK!");
         UserDto result = userService.saveUser(userDto);
-        response.addHeader(Constants.REFRESH_TOKEN, result.getRefreshToken());
+        response.addHeader(Constants.REFRESH_TOKEN, result.getAuthEntity().getRefreshToken());
         return new EncryptResponse(response, result, null);
 
     }
