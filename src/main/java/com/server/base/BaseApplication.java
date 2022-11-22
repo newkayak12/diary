@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @Slf4j
 public class BaseApplication {
     public static void main(String[] args) {
+
         ApiInspectionGenerator.inspection();
         SpringApplication.run(BaseApplication.class, args);
         log.error("-----------------------------------------------------------------------------");
