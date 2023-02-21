@@ -109,8 +109,13 @@ public class FileUpload {
                 BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
                 int type = bufferedImage.getType()==0? BufferedImage.TYPE_INT_ARGB:bufferedImage.getType();
                 for (String sizePiece : size) {
-                    String path = this.filePath + "/" + sizePiece + "/" + datePath + "/" + encryptedFileName + "." + extension;
+                    String path = this.filePath + "/" + sizePiece + "/" + datePath ;
                     File f = new File(path);
+                    if(!f.exists()){
+                        f.mkdirs();
+                    }
+                    f = new File(path+"/" + encryptedFileName + "." + extension);
+
                     ImageIO.write(resize(bufferedImage, sizePiece, type),extension, f);
                 }
             } catch (IOException e) {

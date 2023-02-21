@@ -3,12 +3,16 @@ package com.server.diary.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class PagingDto {
     public void setStartDate(String startDate) {
         if(Objects.isNull(startDate)||startDate.equals("")){
