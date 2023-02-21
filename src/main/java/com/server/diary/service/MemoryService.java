@@ -17,7 +17,6 @@ public class MemoryService {
 
     public PagingContainer fetchMemoryList(SearchParameter searchParameter) {
         Pageable pageable = PageRequest.of(searchParameter.getPage(), searchParameter.getLimit());
-
-        return new PagingContainer(pageable, null);
+        return new PagingContainer(pageable, memoryRepository.fetchMemoryList(pageable, searchParameter));
     }
 }
