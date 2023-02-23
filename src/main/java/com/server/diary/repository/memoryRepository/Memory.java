@@ -36,4 +36,9 @@ public class Memory {
     @Column
     @Enumerated(EnumType.STRING)
     private Category category;
+
+    @PostPersist
+    public void save(){
+        this.regDate = LocalDateTime.now();
+    }
 }

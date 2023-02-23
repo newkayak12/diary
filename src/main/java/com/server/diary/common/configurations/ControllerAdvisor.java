@@ -2,9 +2,9 @@ package com.server.diary.common.configurations;
 
 import com.server.diary.common.constants.Constants;
 import com.server.diary.common.exception.ServiceException;
-import com.server.diary.common.fileUpload.FileUpload;
 import com.server.diary.common.responseContainer.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.newkayak.FileUpload.FileUpload;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -73,4 +73,24 @@ public class MemoryRepositoryImpl extends QuerydslRepositorySupport implements M
 
         return new PageImpl<MemoryDto>(result.getResults(), pageable, result.getTotal());
     }
+
+    @Override
+    public MemoryDto fetchMemory(Long memoryNo) {
+        return query.select(Projections.bean(MemoryDto.class,
+                                memory.memoryNo,
+                                memory.firstPhoto,
+                                memory.secondPhoto,
+                                memory.thirdPhoto,
+                                memory.contents,
+                                memory.regDate,
+                                memory.address,
+                                memory.category
+                         )).from(memory)
+                .leftJoin(memory.firstPhoto)
+                .leftJoin(memory.secondPhoto)
+                .leftJoin(memory.thirdPhoto)
+                .where(memory.memoryNo.eq(memoryNo))
+                .fetchJoin()
+                .fetchOne();
+    }
 }

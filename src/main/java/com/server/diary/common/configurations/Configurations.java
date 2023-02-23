@@ -3,8 +3,8 @@ package com.server.diary.common.configurations;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.server.diary.common.authorizations.interceptor.AuthInterceptor;
 import com.server.diary.common.constants.Constants;
-import com.server.diary.common.fileUpload.FileUpload;
 import org.modelmapper.ModelMapper;
+import org.newkayak.FileUpload.FileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,7 +41,7 @@ public class Configurations implements WebMvcConfigurer {
     @Bean
     public DateLogger dateLogger() {return new DateLogger();}
     @Bean
-    public FileUpload fileUpload(){return new FileUpload(Constants.FILE_PATH, Constants.IMAGE_URL, Constants.RESIZE, Constants.FILE_MAXIMUM_SIZE);}
+    public FileUpload fileUpload(){return new FileUpload(Constants.FILE_PATH, Constants.RESIZE, Constants.FILE_MAXIMUM_SIZE);}
 
     @Bean
     public JPAQueryFactory jpaQueryFactory(){

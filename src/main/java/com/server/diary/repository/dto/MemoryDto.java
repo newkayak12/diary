@@ -1,10 +1,12 @@
 package com.server.diary.repository.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.server.diary.common.enums.Category;
 import com.server.diary.common.exception.ServiceException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -16,11 +18,15 @@ import java.util.Arrays;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MemoryDto implements Serializable {
     private Long memoryNo;
     private PhotoDto firstPhoto;
+    private MultipartFile firstMultipartFile;
     private PhotoDto secondPhoto;
+    private MultipartFile secondMultipartFile;
     private PhotoDto thirdPhoto;
+    private MultipartFile thirdMultipartFile;
     private String contents;
     private LocalDateTime regDate;
     private String address;
