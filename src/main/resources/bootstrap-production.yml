@@ -1,7 +1,0 @@
-spring:
-#  profiles:
-#    active: local
-  application:
-    name: diary
-  config:
-    import: configserver:http://192.168.0.23:8888
