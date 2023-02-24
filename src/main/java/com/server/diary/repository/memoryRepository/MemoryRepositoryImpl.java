@@ -5,13 +5,13 @@ import com.querydsl.core.QueryResults;
 import com.querydsl.core.support.QueryBase;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.server.diary.repository.dto.MemoryDto;
-import com.server.diary.repository.dto.PhotoDto;
-import com.server.diary.repository.dto.SearchParameter;
+import com.server.diary.repository.dto.*;
+import com.server.diary.repository.photoRepository.Photo;
 import com.server.diary.repository.photoRepository.QPhoto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.util.List;
@@ -30,8 +30,10 @@ public class MemoryRepositoryImpl extends QuerydslRepositorySupport implements M
 
     @Override
 
-    public Page<MemoryDto> fetchMemoryList(Pageable pageable, SearchParameter searchParameter) {
+    public Page fetchMemoryList(Pageable pageable, SearchParameter searchParameter) {
         BooleanBuilder builder = new BooleanBuilder();
+        builder.and(memory.user.userNo.eq(searchParameter.getUserNo()));
+
         if (Objects.nonNull(searchParameter.getStartDate()) && Objects.nonNull(searchParameter.getEndDate())){
             builder.and(memory.regDate.between(searchParameter.getStartDate().atStartOfDay(), searchParameter.getEndDate().plusDays(1).atStartOfDay().minusNanos(1)));
         }
@@ -43,54 +45,42 @@ public class MemoryRepositoryImpl extends QuerydslRepositorySupport implements M
         }
 
 
-
-                QueryResults<MemoryDto> result = query.select(Projections.bean(MemoryDto.class,
-                                memory.memoryNo,
-                                memory.category,
+                List<MemoryDto> list =
+                        query.select(new QMemoryDto( memory.memoryNo,
+                                new QPhotoDto(memory.firstPhoto.photoNo, memory.firstPhoto.photoUrl),
+                                new QPhotoDto(memory.secondPhoto.photoNo, memory.secondPhoto.photoUrl),
+                                new QPhotoDto(memory.thirdPhoto.photoNo, memory.thirdPhoto.photoUrl),
                                 memory.contents,
-                                memory.address,
                                 memory.regDate,
-                                memory.firstPhoto,
-                                memory.secondPhoto,
-                                memory.thirdPhoto
-                        ))
-//                .select(Projections.bean(PhotoDto.class, memory.firstPhoto))
-//                .select(Projections.bean(PhotoDto.class, memory.secondPhoto))
-//                .select(Projections.bean(PhotoDto.class, memory.thirdPhoto))
+                                memory.address,
+                                memory.category))
                 .from(memory)
-                .leftJoin(memory.firstPhoto)
-                .leftJoin(memory.secondPhoto)
-                .leftJoin(memory.thirdPhoto)
-//                .leftJoin(photo).on(memory.firstPhoto.photoNo.eq(photo.photoNo))
-//                .leftJoin(photo).on(memory.secondPhoto.photoNo.eq(photo.photoNo))
-//                .leftJoin(photo).on(memory.thirdPhoto.photoNo.eq(photo.photoNo))
+                .leftJoin(photo).on(photo.photoNo.eq(memory.firstPhoto.photoNo))
+                .leftJoin(photo).on(photo.photoNo.eq(memory.secondPhoto.photoNo))
+                .leftJoin(photo).on(photo.photoNo.eq(memory.thirdPhoto.photoNo))
                 .where(builder)
-                .limit(pageable.getPageSize())
                 .offset(pageable.getOffset())
-                .orderBy(memory.memoryNo.asc())
-                .fetchResults();
-
-
-        return new PageImpl<MemoryDto>(result.getResults(), pageable, result.getTotal());
+                .limit(pageable.getPageSize())
+                .orderBy(memory.memoryNo.desc())
+                .fetch();
+        return new PageImpl(list, pageable, query.selectFrom(memory).fetchCount());
     }
 
     @Override
     public MemoryDto fetchMemory(Long memoryNo) {
-        return query.select(Projections.bean(MemoryDto.class,
-                                memory.memoryNo,
-                                memory.firstPhoto,
-                                memory.secondPhoto,
-                                memory.thirdPhoto,
+        return query.select(new QMemoryDto( memory.memoryNo,
+                                new QPhotoDto(memory.firstPhoto.photoNo, memory.firstPhoto.photoUrl),
+                                new QPhotoDto(memory.secondPhoto.photoNo, memory.secondPhoto.photoUrl),
+                                new QPhotoDto(memory.thirdPhoto.photoNo, memory.thirdPhoto.photoUrl),
                                 memory.contents,
                                 memory.regDate,
                                 memory.address,
-                                memory.category
-                         )).from(memory)
-                .leftJoin(memory.firstPhoto)
-                .leftJoin(memory.secondPhoto)
-                .leftJoin(memory.thirdPhoto)
-                .where(memory.memoryNo.eq(memoryNo))
-                .fetchJoin()
-                .fetchOne();
+                                memory.category))
+                    .from(memory)
+                    .leftJoin(photo).on(photo.photoNo.eq(memory.firstPhoto.photoNo))
+                    .leftJoin(photo).on(photo.photoNo.eq(memory.secondPhoto.photoNo))
+                    .leftJoin(photo).on(photo.photoNo.eq(memory.thirdPhoto.photoNo))
+                    .where(memory.memoryNo.eq(memoryNo))
+                    .fetchOne();
     }
 }

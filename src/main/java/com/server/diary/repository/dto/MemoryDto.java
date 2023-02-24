@@ -1,11 +1,10 @@
 package com.server.diary.repository.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.querydsl.core.annotations.QueryProjection;
 import com.server.diary.common.enums.Category;
 import com.server.diary.common.exception.ServiceException;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
@@ -16,11 +15,15 @@ import java.util.Arrays;
  * A DTO for the {@link com.server.diary.repository.memoryRepository.Memory} entity
  */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MemoryDto implements Serializable {
+
     private Long memoryNo;
+    private UserDto user;
     private PhotoDto firstPhoto;
     private MultipartFile firstMultipartFile;
     private PhotoDto secondPhoto;
@@ -33,6 +36,39 @@ public class MemoryDto implements Serializable {
     private Category category;
 
     public void setCategory(String category) throws ServiceException {
-        this.category = Arrays.stream(Category.values()).filter(ca -> ca.equals(category)).findFirst().orElseThrow(() -> new ServiceException("파라미터가 잘못됐습니다."));
+        this.category = Arrays.stream(Category.values()).filter(ca -> ca.name().equals(category)).findFirst().orElseThrow(() -> new ServiceException("파라미터가 잘못됐습니다."));
+    }
+
+
+    @QueryProjection
+    public MemoryDto(Long memoryNo, UserDto user, PhotoDto firstPhoto, PhotoDto secondPhoto, PhotoDto thirdPhoto, String contents, LocalDateTime regDate, String address, Category category) {
+        this.memoryNo = memoryNo;
+        this.user = user;
+        this.firstPhoto = firstPhoto;
+        this.secondPhoto = secondPhoto;
+        this.thirdPhoto = thirdPhoto;
+        this.contents = contents;
+        this.regDate = regDate;
+        this.address = address;
+        this.category = category;
+    }
+
+    @QueryProjection
+    public MemoryDto(Long memoryNo,
+                     PhotoDto firstPhoto,
+                     PhotoDto secondPhoto,
+                     PhotoDto thirdPhoto,
+                     String contents,
+                     LocalDateTime regDate,
+                     String address,
+                     Category category) {
+        this.memoryNo = memoryNo;
+        this.firstPhoto = firstPhoto;
+        this.secondPhoto = secondPhoto;
+        this.thirdPhoto = thirdPhoto;
+        this.contents = contents;
+        this.regDate = regDate;
+        this.address = address;
+        this.category = category;
     }
 }

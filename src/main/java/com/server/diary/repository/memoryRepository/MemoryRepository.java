@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MemoryRepository extends JpaRepository<Memory, Long>, MemoryRepositoryCustom {
+    public void deleteMemoryByMemoryNo( Long memoryNo );
 }

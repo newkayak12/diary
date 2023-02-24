@@ -1,6 +1,7 @@
 package com.server.diary.controller;
 
 import com.server.diary.common.dto.PagingDto;
+import com.server.diary.common.exception.ServiceException;
 import com.server.diary.common.responseContainer.Response;
 import com.server.diary.repository.dto.MemoryDto;
 import com.server.diary.repository.dto.SearchParameter;
@@ -37,8 +38,14 @@ public class MemoryController {
 
     @ApiOperation(value = "추억 저장")
     @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Response save(@ModelAttribute MemoryDto memoryDto){
+    public Response save(@ModelAttribute MemoryDto memoryDto) throws ServiceException {
         return new Response(1, memoryService.save(memoryDto));
+    }
+
+    @ApiOperation(value = "추억 삭제")
+    @DeleteMapping(value = "/{memoryNo}")
+    public Response remove(@PathVariable Long memoryNo){
+        return new Response(1, memoryService.remove(memoryNo));
     }
 
 }

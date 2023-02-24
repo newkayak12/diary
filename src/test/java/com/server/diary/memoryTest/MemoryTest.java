@@ -1,34 +1,80 @@
 package com.server.diary.memoryTest;
-import org.junit.Test;
-import org.newkayak.FileUpload.FileResult;
-import org.newkayak.FileUpload.FileUpload;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.mock.web.MockMultipartFile;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
+import com.server.diary.common.authorizations.annotations.AuthorizeDto;
+import com.server.diary.common.exception.ServiceException;
+import com.server.diary.repository.dto.MemoryDto;
+import com.server.diary.repository.dto.PhotoDto;
+import com.server.diary.repository.dto.SearchParameter;
+import com.server.diary.repository.dto.UserDto;
+import com.server.diary.service.MemoryService;
+import lombok.RequiredArgsConstructor;
+import org.assertj.core.api.Assertions;
+import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+@RunWith(SpringJUnit4ClassRunner.class)
+@Profile(value = "local")
 public class MemoryTest {
-    @Test
-    public void multipartTest() throws IOException{
+
+    @Autowired
+    public MemoryService memoryService;
+    public MultipartFile multipartTest() throws IOException{
         String path = "/Users/sanghyeonkim/Downloads/port/DIARY/src/main/resources/img.jpg";
         FileInputStream fileInputStream = new FileInputStream(path);
         MockMultipartFile file = new MockMultipartFile("img", String.format("%s.%s", "img", "jpg"), "png", fileInputStream);
-
-        FileUpload fileUpload = new FileUpload("/Users/sanghyeonkim/Downloads/port/DIARY/src/main/resources/multi",true, 1024L * 100 );
-        List<FileResult> list = fileUpload.upload(true, file);
-        System.out.println(list);
-
+        return file;
     }
 
     @Test
-    public void test() {
-        CompletableFuture.supplyAsync(() -> 1)
-        .thenApply((value) -> {
-            System.out.println(value);
-            return value;
-        });
+    @DisplayName(value = "저장/ 수정 테스트")
+    public void saveTest() throws IOException, ServiceException {
+        MemoryDto memoryDto = MemoryDto.builder().user(UserDto.builder().userNo(18L).build())
+//                           .memoryNo(4L)
+//                           .firstPhoto(PhotoDto.builder().photoNo(25L).build())
+//                           .secondPhoto(PhotoDto.builder().photoNo(26L).build())
+//                           .thirdPhoto(PhotoDto.builder().photoNo(27L).build())
+                           .firstMultipartFile(multipartTest())
+                           .secondMultipartFile(multipartTest())
+                           .thirdMultipartFile(multipartTest())
+                           .contents("TEST3")
+                           .address("TEST3")
+                           .build();
+       memoryDto.setCategory("CULTURAL_LIFE");
+       memoryService.save(memoryDto);
     }
+    @Test
+    @DisplayName(value = "삭제 테스트")
+    public void removeTest() {
+        Assertions.assertThat(memoryService.remove(2L)).isEqualTo("삭제했습니다.");
+    }
+
+    @Test
+    @DisplayName(value = "단일 조희 테스트")
+    public void fetchMemoryTest(){
+        System.out.println(memoryService.fetchMemory(3L));
+    }
+
+    @Test
+    @DisplayName(value = "리스트 조회 테스트")
+    public  void fetchMemoriesTest(){
+        SearchParameter searchParameter = new SearchParameter();
+        searchParameter.setUserNo(18L);
+        searchParameter.setPage(1);
+        searchParameter.setLimit(1);
+        System.out.println(memoryService.fetchMemoryList(searchParameter));
+    }
+
 }

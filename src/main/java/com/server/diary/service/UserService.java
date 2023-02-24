@@ -3,7 +3,6 @@ package com.server.diary.service;
 import com.server.diary.common.authorizations.TokenManager;
 import com.server.diary.common.exception.Exceptions;
 import com.server.diary.common.exception.ServiceException;
-import com.server.diary.common.mapper.Mapper;
 import com.server.diary.repository.dto.UserDto;
 import com.server.diary.repository.userRepository.User;
 import com.server.diary.repository.userRepository.UserRepository;
@@ -33,7 +32,7 @@ public class UserService {
      */
     @Transactional(readOnly = true)
     public UserDto getRefreshToken(Long userNo){
-        return Mapper.modelMapping(userRepository.getUserByUserNo(userNo), new UserDto());
+        return mapper.map(userRepository.getUserByUserNo(userNo), UserDto.class);
     }
 
     /**
@@ -48,11 +47,10 @@ public class UserService {
                 .orElseThrow(() ->  new ServiceException(Exceptions.NO_DATA));
         String password = userDto.getPassword();
         String rawPassword = user.getPassword();
-        log.warn("?? {}", passwordEncoder.matches(rawPassword, password));
         if(!passwordEncoder.matches(password, rawPassword)){
             throw  new ServiceException(Exceptions.NO_DATA);
         }
-        return Mapper.modelMapping(user, new UserDto());
+        return mapper.map(user, UserDto.class);
     }
 
     /**
@@ -68,7 +66,7 @@ public class UserService {
         if(!userRef.isEmpty()) throw new ServiceException(Exceptions.ALREADY_EXIST);
 
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        User user = Mapper.modelMapping(userDto, new User());
+        User user = mapper.map(userDto, User.class);
         log.warn("USERDTO {}", userDto);
         log.warn("USER {}", user);
         user = userRepository.save(user);

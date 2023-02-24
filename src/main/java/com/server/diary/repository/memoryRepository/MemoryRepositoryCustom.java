@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface MemoryRepositoryCustom {
-    Page<MemoryDto> fetchMemoryList(Pageable pageable, SearchParameter searchParameter);
+    Page fetchMemoryList(Pageable pageable, SearchParameter searchParameter);
 
     MemoryDto fetchMemory(Long memoryNo);
 }

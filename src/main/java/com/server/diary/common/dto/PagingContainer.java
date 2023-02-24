@@ -1,14 +1,12 @@
 package com.server.diary.common.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
+@ToString
 public class PagingContainer <T> {
     List<T> list;
     PageInfo pageInfo;
