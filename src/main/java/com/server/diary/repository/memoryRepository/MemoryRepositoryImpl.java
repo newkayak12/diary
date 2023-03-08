@@ -35,7 +35,7 @@ public class MemoryRepositoryImpl extends QuerydslRepositorySupport implements M
         builder.and(memory.user.userNo.eq(searchParameter.getUserNo()));
 
         if (Objects.nonNull(searchParameter.getStartDate()) && Objects.nonNull(searchParameter.getEndDate())){
-            builder.and(memory.regDate.between(searchParameter.getStartDate().atStartOfDay(), searchParameter.getEndDate().plusDays(1).atStartOfDay().minusNanos(1)));
+            builder.and(memory.regDate.between(searchParameter.getStartDate(), searchParameter.getEndDate()));
         }
         if (Objects.nonNull(searchParameter.getAddress())){
             builder.and(memory.address.contains(searchParameter.getAddress()));

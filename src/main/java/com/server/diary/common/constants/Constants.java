@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.List;
 
-@Component
+@Component(value = "constant")
 public class Constants {
     public static String PROJECT_NAME;
     public static Boolean IS_DEV_MODE;

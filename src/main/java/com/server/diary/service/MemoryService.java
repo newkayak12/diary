@@ -46,25 +46,32 @@ public class MemoryService {
 
     @Transactional(rollbackFor = Exception.class)
     public String save(MemoryDto memoryDto) throws ServiceException {
-        if(Objects.nonNull(memoryDto.getFirstMultipartFile())){
+        try {
 
-            Photo first = fileUpload.upload(true, memoryDto.getFirstMultipartFile()).stream()
-                    .findFirst().map(file -> mapper.map(PhotoDto.builder().photoUrl(file.getStoredFileName()).build(), Photo.class))
-                    .orElseThrow(() -> new ServiceException("파일 저장에 실패했습니다."));
-            memoryDto.setFirstPhoto(mapper.map(photoRepository.save(first), PhotoDto.class));
+
+
+            if(Objects.nonNull(memoryDto.getFirstMultipartFile())){
+                Photo first = fileUpload.upload(true, memoryDto.getFirstMultipartFile()).stream()
+                        .findFirst().map(file -> mapper.map(PhotoDto.builder().photoUrl(file.getStoredFileName()).build(), Photo.class))
+                        .orElseThrow(() -> new ServiceException("파일 저장에 실패했습니다."));
+                memoryDto.setFirstPhoto(mapper.map(photoRepository.save(first), PhotoDto.class));
+            }
+            if(Objects.nonNull(memoryDto.getSecondMultipartFile())){
+                Photo second = fileUpload.upload(true, memoryDto.getSecondMultipartFile()).stream()
+                        .findFirst().map(file -> mapper.map(PhotoDto.builder().photoUrl(file.getStoredFileName()).build(), Photo.class))
+                        .orElseThrow(() -> new ServiceException("파일 저장에 실패했습니다."));
+                memoryDto.setSecondPhoto(mapper.map(photoRepository.save(second), PhotoDto.class));
+            }
+            if(Objects.nonNull(memoryDto.getThirdMultipartFile())){
+                Photo third = fileUpload.upload(true, memoryDto.getThirdMultipartFile()).stream()
+                        .findFirst().map(file -> mapper.map(PhotoDto.builder().photoUrl(file.getStoredFileName()).build(), Photo.class))
+                        .orElseThrow(() -> new ServiceException("파일 저장에 실패했습니다."));
+                memoryDto.setThirdPhoto(mapper.map(photoRepository.save(third), PhotoDto.class));
+            }
+        } catch (NullPointerException e){
+            e.printStackTrace();
         }
-        if(Objects.nonNull(memoryDto.getSecondMultipartFile())){
-            Photo second = fileUpload.upload(true, memoryDto.getSecondMultipartFile()).stream()
-                    .findFirst().map(file -> mapper.map(PhotoDto.builder().photoUrl(file.getStoredFileName()).build(), Photo.class))
-                    .orElseThrow(() -> new ServiceException("파일 저장에 실패했습니다."));
-            memoryDto.setSecondPhoto(mapper.map(photoRepository.save(second), PhotoDto.class));
-        }
-        if(Objects.nonNull(memoryDto.getThirdMultipartFile())){
-            Photo third = fileUpload.upload(true, memoryDto.getThirdMultipartFile()).stream()
-                    .findFirst().map(file -> mapper.map(PhotoDto.builder().photoUrl(file.getStoredFileName()).build(), Photo.class))
-                    .orElseThrow(() -> new ServiceException("파일 저장에 실패했습니다."));
-            memoryDto.setThirdPhoto(mapper.map(photoRepository.save(third), PhotoDto.class));
-        }
+
 
         Memory memory = mapper.map(memoryDto, Memory.class);
 

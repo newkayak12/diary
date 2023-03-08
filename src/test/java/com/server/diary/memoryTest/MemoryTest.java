@@ -22,11 +22,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringJUnit4ClassRunner.class)
-@Profile(value = "local")
+@Profile(value = "production")
 public class MemoryTest {
 
     @Autowired
@@ -77,4 +78,7 @@ public class MemoryTest {
         System.out.println(memoryService.fetchMemoryList(searchParameter));
     }
 
+    @Test
+    public void test() {
+    }
 }

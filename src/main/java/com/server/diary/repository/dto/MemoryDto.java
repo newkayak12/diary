@@ -5,9 +5,11 @@ import com.querydsl.core.annotations.QueryProjection;
 import com.server.diary.common.enums.Category;
 import com.server.diary.common.exception.ServiceException;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -31,7 +33,8 @@ public class MemoryDto implements Serializable {
     private PhotoDto thirdPhoto;
     private MultipartFile thirdMultipartFile;
     private String contents;
-    private LocalDateTime regDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate regDate;
     private String address;
     private Category category;
 
@@ -39,9 +42,13 @@ public class MemoryDto implements Serializable {
         this.category = Arrays.stream(Category.values()).filter(ca -> ca.name().equals(category)).findFirst().orElseThrow(() -> new ServiceException("파라미터가 잘못됐습니다."));
     }
 
+//    public void setRegDate(String regDate) {
+//        this.regDate = LocalDate.parse(regDate).atStartOfDay();
+//    }
+
 
     @QueryProjection
-    public MemoryDto(Long memoryNo, UserDto user, PhotoDto firstPhoto, PhotoDto secondPhoto, PhotoDto thirdPhoto, String contents, LocalDateTime regDate, String address, Category category) {
+    public MemoryDto(Long memoryNo, UserDto user, PhotoDto firstPhoto, PhotoDto secondPhoto, PhotoDto thirdPhoto, String contents, LocalDate regDate, String address, Category category) {
         this.memoryNo = memoryNo;
         this.user = user;
         this.firstPhoto = firstPhoto;
@@ -59,7 +66,7 @@ public class MemoryDto implements Serializable {
                      PhotoDto secondPhoto,
                      PhotoDto thirdPhoto,
                      String contents,
-                     LocalDateTime regDate,
+                     LocalDate regDate,
                      String address,
                      Category category) {
         this.memoryNo = memoryNo;

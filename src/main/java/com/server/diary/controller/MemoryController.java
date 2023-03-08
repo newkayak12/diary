@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "/api/user", description = "추억")
+@Tag(name = "/api/memory", description = "추억")
 @RestController
 @CrossOrigin("*")
 @RequestMapping(value = "/api/memory")

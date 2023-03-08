@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -48,6 +49,7 @@ public class Configurations implements WebMvcConfigurer {
     @Bean
     public DateLogger dateLogger() {return new DateLogger();}
     @Bean
+    @DependsOn(value = {"constant"})
     public FileUpload fileUpload(){return new FileUpload(Constants.FILE_PATH, true, Constants.FILE_MAXIMUM_SIZE);}
 
     @Bean

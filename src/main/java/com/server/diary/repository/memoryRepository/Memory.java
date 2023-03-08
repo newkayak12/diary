@@ -10,7 +10,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -41,7 +43,7 @@ public class Memory {
     private String contents;
 
     @Column
-    private LocalDateTime regDate;
+    private LocalDate regDate;
 
     @Column
     private String address;
@@ -52,6 +54,6 @@ public class Memory {
 
     @PostPersist
     public void save(){
-        this.regDate = LocalDateTime.now();
+        if(Objects.isNull(this.regDate))  this.regDate = LocalDate.now();
     }
 }
