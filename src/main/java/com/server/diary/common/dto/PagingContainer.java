@@ -4,10 +4,12 @@ import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.Serializable;
 import java.util.List;
 
 @ToString
-public class PagingContainer <T> {
+@Getter
+public class PagingContainer <T> implements Serializable {
     List<T> list;
     PageInfo pageInfo;
     public PagingContainer(Pageable pageInfo, Page<T> listFunction){

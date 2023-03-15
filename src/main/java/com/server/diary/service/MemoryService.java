@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -33,7 +34,7 @@ public class MemoryService {
 
     @Transactional(readOnly = true)
     public PagingContainer fetchMemoryList(SearchParameter searchParameter) {
-        Pageable pageable = PageRequest.of(searchParameter.getPage(), searchParameter.getLimit());
+        Pageable pageable = PageRequest.of(searchParameter.getPage() - 1, searchParameter.getLimit());
         return new PagingContainer(pageable, memoryRepository.fetchMemoryList(pageable, searchParameter));
     }
 

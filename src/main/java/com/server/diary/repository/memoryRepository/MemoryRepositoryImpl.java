@@ -4,15 +4,18 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.support.QueryBase;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.server.diary.repository.dto.*;
 import com.server.diary.repository.photoRepository.Photo;
 import com.server.diary.repository.photoRepository.QPhoto;
+import org.bouncycastle.asn1.sec.SECNamedCurves;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
+import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,7 +33,9 @@ public class MemoryRepositoryImpl extends QuerydslRepositorySupport implements M
 
     @Override
 
-    public Page fetchMemoryList(Pageable pageable, SearchParameter searchParameter) {
+    public Page<MemoryDto> fetchMemoryList(Pageable pageable, SearchParameter searchParameter) {
+        searchParameter.calculate();
+
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(memory.user.userNo.eq(searchParameter.getUserNo()));
 
@@ -45,7 +50,7 @@ public class MemoryRepositoryImpl extends QuerydslRepositorySupport implements M
         }
 
 
-                List<MemoryDto> list =
+                List<MemoryDto> queryResult =
                         query.select(new QMemoryDto( memory.memoryNo,
                                 new QPhotoDto(memory.firstPhoto.photoNo, memory.firstPhoto.photoUrl),
                                 new QPhotoDto(memory.secondPhoto.photoNo, memory.secondPhoto.photoUrl),
@@ -63,7 +68,10 @@ public class MemoryRepositoryImpl extends QuerydslRepositorySupport implements M
                 .limit(pageable.getPageSize())
                 .orderBy(memory.memoryNo.desc())
                 .fetch();
-        return new PageImpl(list, pageable, query.selectFrom(memory).fetchCount());
+        JPAQuery<Long> count = query.select(memory.count()).from(memory).where(builder);
+//        query.select(memory.count()).from(memory).where(builder).fetchOne()
+
+        return PageableExecutionUtils.getPage(queryResult, pageable, count::fetchOne);
     }
 
     @Override

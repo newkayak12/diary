@@ -37,4 +37,10 @@ public class PagingDto {
     private LocalDate startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
+
+    private Integer offset;
+
+    public void calculate(){
+        this.offset = (page - 1) * 10;
+    }
 }
