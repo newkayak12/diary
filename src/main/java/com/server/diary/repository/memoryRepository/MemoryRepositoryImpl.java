@@ -60,9 +60,9 @@ public class MemoryRepositoryImpl extends QuerydslRepositorySupport implements M
                                 memory.address,
                                 memory.category))
                 .from(memory)
-                .leftJoin(photo).on(photo.photoNo.eq(memory.firstPhoto.photoNo))
-                .leftJoin(photo).on(photo.photoNo.eq(memory.secondPhoto.photoNo))
-                .leftJoin(photo).on(photo.photoNo.eq(memory.thirdPhoto.photoNo))
+                .leftJoin( memory.firstPhoto, photo).on(photo.photoNo.eq(memory.firstPhoto.photoNo))
+                .leftJoin( memory.secondPhoto, photo).on(photo.photoNo.eq(memory.secondPhoto.photoNo))
+                .leftJoin( memory.thirdPhoto, photo).on(photo.photoNo.eq(memory.thirdPhoto.photoNo))
                 .where(builder)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
