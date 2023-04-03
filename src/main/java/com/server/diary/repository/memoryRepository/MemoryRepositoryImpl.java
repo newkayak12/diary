@@ -1,21 +1,17 @@
 package com.server.diary.repository.memoryRepository;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.QueryResults;
-import com.querydsl.core.support.QueryBase;
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.server.diary.repository.dto.*;
-import com.server.diary.repository.photoRepository.Photo;
-import com.server.diary.repository.photoRepository.QPhoto;
-import org.bouncycastle.asn1.sec.SECNamedCurves;
+import com.server.diary.repository.dto.MemoryDto;
+import com.server.diary.repository.dto.QMemoryDto;
+import com.server.diary.repository.dto.QPhotoDto;
+import com.server.diary.repository.dto.SearchParameter;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -42,11 +38,14 @@ public class MemoryRepositoryImpl extends QuerydslRepositorySupport implements M
         if (Objects.nonNull(searchParameter.getStartDate()) && Objects.nonNull(searchParameter.getEndDate())){
             builder.and(memory.regDate.between(searchParameter.getStartDate(), searchParameter.getEndDate()));
         }
-        if (Objects.nonNull(searchParameter.getAddress())){
+        if (Objects.nonNull(searchParameter.getAddress()) && !StringUtils.isEmpty(searchParameter.getAddress())){
             builder.and(memory.address.contains(searchParameter.getAddress()));
         }
         if (Objects.nonNull(searchParameter.getCategory())){
             builder.and(memory.category.eq(searchParameter.getCategory()));
+        }
+        if (Objects.nonNull(searchParameter.getSearchText()) && !StringUtils.isEmpty(searchParameter.getSearchText())){
+            builder.and(memory.contents.contains(searchParameter.getSearchText()));
         }
 
 
@@ -85,9 +84,9 @@ public class MemoryRepositoryImpl extends QuerydslRepositorySupport implements M
                                 memory.address,
                                 memory.category))
                     .from(memory)
-                    .leftJoin(photo).on(photo.photoNo.eq(memory.firstPhoto.photoNo))
-                    .leftJoin(photo).on(photo.photoNo.eq(memory.secondPhoto.photoNo))
-                    .leftJoin(photo).on(photo.photoNo.eq(memory.thirdPhoto.photoNo))
+                    .leftJoin( memory.firstPhoto, photo).on(photo.photoNo.eq(memory.firstPhoto.photoNo))
+                    .leftJoin( memory.secondPhoto, photo).on(photo.photoNo.eq(memory.secondPhoto.photoNo))
+                    .leftJoin( memory.thirdPhoto, photo).on(photo.photoNo.eq(memory.thirdPhoto.photoNo))
                     .where(memory.memoryNo.eq(memoryNo))
                     .fetchOne();
     }

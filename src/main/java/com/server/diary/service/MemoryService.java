@@ -79,7 +79,6 @@ public class MemoryService {
         if(Objects.isNull(memoryRepository.save(memory))){
             throw new ServiceException("저장에 실패했습니다.");
         }
-        log.warn("3");
         return "저장했습니다.";
     }
 
